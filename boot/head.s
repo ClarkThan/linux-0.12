@@ -21,7 +21,7 @@ startup_32:
 	mov %ax,%es
 	mov %ax,%fs
 	mov %ax,%gs
-	lss _stack_start,%esp
+	lss stack_start,%esp
 	call setup_idt
 	call setup_gdt
 	movl $0x10,%eax		# reload all the segment registers
@@ -29,7 +29,7 @@ startup_32:
 	mov %ax,%es		# reloaded in 'setup_gdt'
 	mov %ax,%fs
 	mov %ax,%gs
-	lss _stack_start,%esp
+	lss stack_start,%esp
 	xorl %eax,%eax
 1:	incl %eax		# check that A20 really IS enabled
 	movl %eax,0x000000	# loop forever if it isn't
@@ -82,7 +82,7 @@ setup_idt:
 	movw %dx,%ax		/* selector = 0x0008 = cs */
 	movw $0x8E00,%dx	/* interrupt gate - dpl=0, present */
 
-	lea _idt,%edi
+	lea idt,%edi
 	mov $256,%ecx
 rp_sidt:
 	movl %eax,(%edi)
@@ -222,17 +222,17 @@ setup_paging:
 .word 0
 idt_descr:
 	.word 256*8-1		# idt contains 256 entries
-	.long _idt
+	.long idt
 .align 4
 .word 0
 gdt_descr:
 	.word 256*8-1		# so does gdt (not that that's any
-	.long _gdt		# magic number, but it works for me :^)
+	.long gdt		# magic number, but it works for me :^)
 
 	.align 8
-_idt:	.fill 256,8,0		# idt is uninitialized
+idt:	.fill 256,8,0		# idt is uninitialized
 
-_gdt:	.quad 0x0000000000000000	/* NULL descriptor */
+gdt:	.quad 0x0000000000000000	/* NULL descriptor */
 	.quad 0x00c09a0000000fff	/* 16Mb */
 	.quad 0x00c0920000000fff	/* 16Mb */
 	.quad 0x0000000000000000	/* TEMPORARY - don't use */
