@@ -12,7 +12,7 @@
  * the page directory.
  */
 .text
-.globl statup_32
+.globl startup_32
 .globl idt,gdt,pg_dir,tmp_floppy_area
 pg_dir:
 startup_32:
