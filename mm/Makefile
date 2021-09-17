@@ -1,6 +1,6 @@
 CC	=gcc
 CFLAGS	=-O -m32 -Wall -fstrength-reduce -fomit-frame-pointer \
-	-fno-stack-protector -finline-functions -nostdinc -I../include
+	-finline-functions -nostdinc -I../include
 AS	=as -32
 AR	=ar
 LD	=ld -m elf_i386
